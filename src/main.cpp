@@ -5,6 +5,7 @@
  * et enregistre le singleton auprès de l'IHM.
  */
 
+#include <QLoggingCategory>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -23,6 +24,8 @@ int main(int argc, char *argv[])
 {
     qputenv("QT_QPA_PLATFORM", "xcb");
     QGuiApplication app(argc, argv);
+    // Filtre pour masquer les messages qDebug()
+    QLoggingCategory::setFilterRules("*.debug=false");
 
     qDebug() << "Initialisation du Dashboard Automobile...";
 
