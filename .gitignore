@@ -1,0 +1,18 @@
+# Dossiers de compilation
+build/
+bin/
+*.o
+*.obj
+
+# Fichiers générés par CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Fichiers de configuration IDE
+.vscode/
+*.user
+
+# Fichiers temporaires ou de logs
+*.log
