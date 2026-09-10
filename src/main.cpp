@@ -24,8 +24,14 @@ int main(int argc, char *argv[])
 {
     qputenv("QT_QPA_PLATFORM", "xcb");
     QGuiApplication app(argc, argv);
-    // Filtre pour masquer les messages qDebug()
-    QLoggingCategory::setFilterRules("*.debug=false");
+
+    /// Convertit les arguments en liste
+    QStringList args = app.arguments();
+
+    /// Si l'option --debug n'est pas présente, on désactive les logs
+    if (!args.contains("--debug")) {
+        QLoggingCategory::setFilterRules("*.debug=false");
+    }
 
     qDebug() << "Initialisation du Dashboard Automobile...";
 
