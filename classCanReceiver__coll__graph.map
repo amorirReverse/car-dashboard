@@ -1,0 +1,4 @@
+<map id="CanReceiver" name="CanReceiver">
+<area shape="rect" id="node1" title="Classe responsable de l&#39;écoute du bus CAN et de l&#39;exposition de la télémétrie à QML." alt="" coords="5,79,109,104"/>
+<area shape="rect" id="node2" title=" " alt="" coords="20,5,95,31"/>
+</map>
