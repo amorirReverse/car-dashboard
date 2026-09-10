@@ -16,3 +16,4 @@ Makefile
 
 # Fichiers temporaires ou de logs
 *.log
+docs/html/
