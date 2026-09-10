@@ -74,7 +74,7 @@ make
 ### 4. Lancement
 
 ```bash
-./CarDashboard
+./CarDashboard_app
 ```
 
 ## 🧪 Tester avec le bus CAN
@@ -84,6 +84,13 @@ Pour envoyer manuellement une trame CAN de test sur l'interface `vcan0` et véri
 ```bash
 # Exemple : Envoi d'une trame avec l'ID 0x123
 cansend vcan0 123#1122334455667788
+```
+### Injection dynamique via le script Python
+
+Un script d'accélération progressive est fourni sous `scripts/simulate_car.py` :
+
+```bash
+python3 scripts/simulate_car.py
 ```
 
 ## ✒️ Auteur
