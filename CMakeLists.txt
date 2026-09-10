@@ -1,3 +1,8 @@
+# ==============================================================================
+# @file CMakeLists.txt
+# @brief Script de configuration CMake pour la compilation du projet CarDashboard.
+# ==============================================================================
+
 cmake_minimum_required(VERSION 3.16)
 project(CarDashboard VERSION 1.0 LANGUAGE CXX)
 
@@ -17,6 +22,15 @@ add_executable(CarDashboard
     src/CanReceiver.cpp
 )
 
+# Déclaration du module QML pour l'intégration de main.qml
+qt_add_qml_module(CarDashboard
+    URI CarDashboard
+    VERSION 1.0
+    QML_FILES
+        src/main.qml
+)
+
+# Édition des liens avec les bibliothèques Qt6
 target_link_libraries(CarDashboard PRIVATE
     Qt6::Core
     Qt6::Gui

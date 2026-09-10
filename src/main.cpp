@@ -1,9 +1,23 @@
+/**
+ * @file main.cpp
+ * @brief Point d'entrée de l'application Qt.
+ * @details Initialise le moteur QML, instancie le récepteur C++ SocketCAN 
+ * et enregistre le singleton auprès de l'IHM.
+ */
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QDebug>
 
 #include "CanReceiver.h"
+
+/**
+ * @brief Fonction principale du programme.
+ * @param argc Nombre d'arguments en ligne de commande.
+ * @param argv Tableau des arguments.
+ * @return Code de sortie de l'application Qt.
+ */
 
 int main(int argc, char *argv[])
 {
@@ -24,10 +38,8 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     /// Chargement de l'interface graphique (fichier src/main.qml)
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/qt/qml/Dashboard/src/main.qml"));
     
-    /// Alternative si le fichier QML est chargé directement depuis le disque :
-    /// const QUrl url = QUrl::fromLocalFile("src/main.qml");
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
