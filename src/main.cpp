@@ -10,7 +10,7 @@
 #include <QQmlContext>
 #include <QDebug>
 
-#include "CanReceiver.h"
+#include "can_receiver.h"
 
 /**
  * @brief Fonction principale du programme.
@@ -21,6 +21,7 @@
 
 int main(int argc, char *argv[])
 {
+    qputenv("QT_QPA_PLATFORM", "xcb");
     QGuiApplication app(argc, argv);
 
     qDebug() << "Initialisation du Dashboard Automobile...";
@@ -38,7 +39,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     /// Chargement de l'interface graphique (fichier src/main.qml)
-    const QUrl url(QStringLiteral("qrc:/qt/qml/Dashboard/src/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/qt/qml/CarDashboard/src/main.qml"));
     
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

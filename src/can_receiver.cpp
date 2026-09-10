@@ -18,7 +18,7 @@
   * @brief Constructeur de la classe CanReceiver
   * @param parent Objet QObjet parent pour l'arbre de mémoire Qt
   */
- CanReceiver::CanReceiver(QObject *parent) : QObject(parent) {}
+ CanReceiver::CanReceiver(QObject *parent) : QObject(parent), m_running(false), m_speed(0), m_rpm(0) {}
 
  /**
   * @brief Destructeur de la classe. Arrête l'écoute avant destruction.
@@ -41,7 +41,7 @@
     /// Instanciation et lancement du thread de lecture asynchrome
     QThread *thread = QThread::create([this, interfaceName](){
         readLoop(interfaceName);
-    })
+    });
 
     connect(thread, &QThread::finished, thread, &QObject::deleteLater);
     thread->start();
@@ -60,7 +60,7 @@
   * @details Ouvre une socket RAW, effectue le blind sur l'interface puis décode les trames.
   * @param interfaceName Nom de l'interface CAN à écouter.
   */
- Void CanReceiver::readLoop(const QString &interfaceName)
+ void CanReceiver::readLoop(const QString &interfaceName)
  {
     /// Création de la socket CAN native Linux (AF_CAN / PF_CAN)
     int socketFd = socket(PF_CAN, SOCK_RAW, CAN_RAW);
@@ -68,11 +68,16 @@
         qWarning() << "Erreur lors de la création de la socket CAN:" << strerror(errno);
         return;
     }
+    struct timeval tv;
+    tv.tv_sec = 0;
+    tv.tv_usec = 100000; // 100 ms
+    setsockopt(socketFd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
+
     /// Récupération de l'index de l'interface CAN spécifiée
     ifreq ifr;
     std::strncpy(ifr.ifr_name, interfaceName.toLatin1().constData(), IFNAMSIZ - 1);
     if (ioctl(socketFd, SIOCGIFINDEX, &ifr) < 0) {
-        qwarning() << "Erreur ; Interface" << interfaceName << "non trouvée.";
+        qWarning() << "Erreur ; Interface" << interfaceName << "non trouvée.";
         close(socketFd);
         return;
     }
@@ -96,7 +101,7 @@
     while (m_running) {
         ssize_t bytesRead = read(socketFd, &frame, sizeof(struct can_frame));
         if (bytesRead < 0) {
-            break;
+            continue;
         }
 
         /**
@@ -106,15 +111,17 @@
          */
         if (frame.can_id == 0x123 && frame.can_dlc >= 3) {
             int newSpeed = frame.data[0];
-            int new Rpm = (frame.data[1] << 8) | frame.data[2];
+            int newRpm = (frame.data[1] << 8) | frame.data[2];
+
+            qDebug() << "[CAN REC] Speed:" << newSpeed << "KM/H | RPM:" << newRpm;
 
             if (m_speed != newSpeed) {
                 m_speed = newSpeed;
-                emit speedUpdated(m_speed);
+                emit speedChanged(m_speed);
             }
             if (m_rpm != newRpm) {
                 m_rpm = newRpm;
-                emit rpmUpdated(m_rpm);
+                emit rpmChanged(m_rpm);
             }
         }
 
