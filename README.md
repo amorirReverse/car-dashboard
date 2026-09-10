@@ -4,7 +4,7 @@ Application de tableau de bord automobile en temps réel développée en **C++17
 
 Le projet simule le fonctionnement d'un combiné d'instruments lisant la télémétrie d'un véhicule (vitesse, régime moteur, températures, voyants) diffusée sur une interface réseau CAN virtuelle.
 
-![Aperçu du Dashboard](docs/preview.png) *(Ajoute une capture d'écran une fois l'interface prête)*
+![Aperçu du Dashboard](docs/preview.png) 
 
 ---
 
@@ -31,13 +31,17 @@ Le projet simule le fonctionnement d'un combiné d'instruments lisant la télém
 
 ```text
 car-dashboard/
-├── CMakeLists.txt        # Configuration de compilation CMake
-├── README.md             # Documentation du projet
-├── docs/                 # Captures d'écran et schémas d'architecture
-└── src/
-    ├── main.cpp          # Point d'entrée de l'application Qt
-    ├── can_receiver.cpp  # Lecture asynchrone des trames CAN sur vcan0
-    └── simulator.cpp     # Générateur de télémétrie véhicule (Backend)
+├── CMakeLists.txt          # Configuration et gestion de compilation CMake
+├── docs                
+│   └── preview.png         # Aperçu de l'interface du tableau de bord
+├── README.md               # Documentation du projet
+├── scripts
+│   └── simulate_car.py     # Script de simulation des données du véhicule
+└── src
+    ├── can_receiver.cpp    # Réception asynchrome des trames CAN sur vcan0
+    ├── can_receiver.h      # Déclaration de la classe de réception CAN
+    ├── main.cpp            # Point d'entrée de l'application Qt
+    └── main.qml            # Interface graphique du tableau de bord en QML
 ```
 
 ## ⚙️ Compilation et Exécution
